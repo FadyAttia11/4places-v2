@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const Task = require('./task')
+const Task = require('./place')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -55,8 +55,8 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 })
 //virtual ==> used to link another model (that are not a property in this model)
-userSchema.virtual('tasks', { //anyname ==> the virual property name (like owner in the otherhand)
-    ref: 'Task', //the other model name
+userSchema.virtual('places', { //anyname ==> the virual property name (like owner in the otherhand)
+    ref: 'Place', //the other model name
     localField: '_id',
     foreignField: 'owner' //the two fields that are the same (equal)
 })

@@ -1,14 +1,20 @@
 const mongoose = require('mongoose')
 
-const taskSchema = new mongoose.Schema({
-    description: {
+const placeSchema = new mongoose.Schema({
+    name: {
         type: String,
         required: true,
         trim: true
     },
-    completed: {
-        type: Boolean,
-        default: false
+    
+    category: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    description: {
+        type: String,
+        trim: true
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId, //define type as an ID
@@ -19,6 +25,6 @@ const taskSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Task = mongoose.model('Task', taskSchema)
+const Place = mongoose.model('Place', placeSchema)
 
-module.exports = Task
+module.exports = Place
