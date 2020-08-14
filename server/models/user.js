@@ -1,98 +1,112 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+const validator = require('validator')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const Task = require('./task')
 
-const saltRounds = 10;
-
-const userSchema = mongoose.Schema({
-
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        maxlength: 50
+        required: true,
+        trim: true
     },
     email: {
         type: String,
+        unique: true,
+        required: true,
         trim: true,
-        unique: 1
+        lowercase: true,
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error('Email is invalid!')
+            }
+        }
     },
     password: {
         type: String,
-        minlength: 5
+        required: true,
+        trim: true,
+        minlength: 7,
+        validate(value){
+            if(value.toLowerCase().includes('password')){
+                throw new Error('password cannot contain the word "password"')
+            }
+        }
     },
-    lastname: {
-        type: String,
-        maxlength: 50
-    },
-    role: {
+    age: {
         type: Number,
-        default: 0
+        default: 0,
+        validate(value){
+            if(value < 0){
+                throw new Error('Age must be positive')
+            }
+        }
     },
-    token: {
-        type: String
-    },
-    tokenExp: {
-        type: Number
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }],
+    avatar: {
+        type: Buffer
     }
+}, {
+    timestamps: true
+})
+//virtual ==> used to link another model (that are not a property in this model)
+userSchema.virtual('tasks', { //anyname ==> the virual property name (like owner in the otherhand)
+    ref: 'Task', //the other model name
+    localField: '_id',
+    foreignField: 'owner' //the two fields that are the same (equal)
 })
 
-//when modifing any password this function will encrypt it with bcrypt
-userSchema.pre('save', function( next ){
-    var user = this
+userSchema.methods.toJSON = function () {
+    const user = this
+    const userObject = user.toObject()
 
+    delete userObject.password
+    delete userObject.tokens
+    delete userObject.avatar
+
+    return userObject
+}
+
+//methods ==> for methods on single user
+userSchema.methods.createAuthToken = async function () {
+    const user = this
+    const token = await jwt.sign({ _id: user._id.toString() }, "thisismysecret")
+    user.tokens = user.tokens.concat({ token })
+    return token
+}
+
+//statics ==> for methods on the entire User model
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email })
+    if(!user) throw new Error('unable to login!')
+
+    const isMatched = await bcrypt.compare(password, user.password)
+    if(!isMatched) throw new Error('unable to login!')
+
+    return user
+}
+
+//Hash the plain text password before saving
+userSchema.pre('save', async function (next) {
+    const user = this
     if(user.isModified('password')){
-
-        bcrypt.genSalt(saltRounds, function(err, salt){
-            if(err) return next(err)
-
-            bcrypt.hash(user.password, salt, function(err, hash){
-                if(err) return next(err)
-
-                user.password = hash
-                next()
-            })
-        })
-
-    }else {
-        next ()
+        user.password = await bcrypt.hash(user.password, 8) //hash the password
     }
+    next()
 })
 
-//to compare password and return true if they match
-userSchema.methods.comparePassword = function(plainPassword, cb) {
-    bcrypt.compare(plainPassword, this.password, function(err, isMatch) {
-        if(err) return cb(err)
-        cb(null, isMatch)
-    })
-}
-
-//to generate token for the user_id and save it on token key to the mongo database
-userSchema.methods.generateToken = function(cb){
-    var user = this
-    //user._id is made by mongodb to identify every query 
-    var token = jwt.sign(user._id.toHexString(), 'secret')
-
-    //user.token is the property of our user object above
-    user.token = token
-    //to save the token propery to the mongo database
-    user.save(function (err, user){
-        if (err) return cb(err)
-        cb(null, user)
-    })
-}
-
-userSchema.statics.findByToken = function(token, cb) {
-    var user = this
-
-    // decode is the user._id for specific user related to secret word
-    jwt.verify(token, 'secret', function(err, decode){
-        user.findOne({"_id": decode, "token": token}, function(err, user){
-            if(err) return cb(err)
-            cb(null, user)
-        })
-    })
-}
-
+//delete user tasks when user is removed
+userSchema.pre('remove', async function (next) {
+    const user = this
+    await Task.deleteMany({ owner: user._id })
+    next()
+})
 
 const User = mongoose.model('User', userSchema)
 
-module.exports = { User }
+module.exports = User

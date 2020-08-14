@@ -1,21 +1,20 @@
-const { User } = require('../models/user')
+const jwt = require('jsonwebtoken')
+const User = require('../models/user')
 
-let auth = (req, res, next) => {
-    let token = req.cookies.x_auth
+const auth = async (req, res, next) => {
+    try{
+        const token = req.header('Authorization').replace('Bearer ', '')
+        const decoded = jwt.verify(token, "thisismysecret")
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
 
-    User.findByToken(token, (err, user) => {
-        if(err) throw err
-        if(!user) return res.json({
-            isAuth: false,
-            error: true
-        })
+        if(!user) throw new Error()
 
-        //change it to the token in the cookies
         req.token = token
-        //change it to the user related to cookies' token -- the return of the above function
         req.user = user
         next()
-    })
+    } catch (e) {
+        res.status(401).send({ error: 'please Authenticate.' })
+    }
 }
 
-module.exports = { auth }
+module.exports = auth

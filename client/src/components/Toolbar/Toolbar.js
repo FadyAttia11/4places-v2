@@ -5,8 +5,14 @@ import axios from 'axios'
 import AuthApi from '../../context/AuthApi'
 
 const Toolbar = () => {
-
+    
     const Auth = useContext(AuthApi)
+
+    const headers = { Authorization: `Bearer ${Cookies.get('x_auth')}`}
+
+    // //to force signout
+    // Auth.setAuth(false)
+    // Cookies.remove('x_auth')
 
     const handleSignOut = async () => {
         const response = await logoutUser()
@@ -19,7 +25,7 @@ const Toolbar = () => {
     }
 
     const logoutUser = () => {
-        const request = axios.get('api/users/logout')
+        const request = axios.get('api/users/logout', { headers })
                         .then(response => response.data)
         return request
     }
