@@ -6,7 +6,7 @@ const Dashboard = () => {
     const Auth = useContext(AuthApi)
     const handleOnClick = () => {
       Auth.setAuth(false)
-      Cookies.remove('user')
+      Cookies.remove('x_auth')
     }
     return (
       <div>

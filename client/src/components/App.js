@@ -10,7 +10,7 @@ const App = () => {
   const [auth, setAuth] = useState(false)
 
   const readCookie = () => {
-    const user = Cookies.get('user')
+    const user = Cookies.get('x_auth')
     if(user){
       setAuth(true)
     }
