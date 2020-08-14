@@ -16,8 +16,13 @@ const placeSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    owner: {
+    ownerID: {
         type: mongoose.Schema.Types.ObjectId, //define type as an ID
+        required: true,
+        ref: 'User' //show all the user data with the same ID in owner objectID ==> refenence one user
+    },
+    ownerName: {
+        type: String, //define type as an ID
         required: true,
         ref: 'User' //show all the user data with the same ID in owner objectID ==> refenence one user
     }

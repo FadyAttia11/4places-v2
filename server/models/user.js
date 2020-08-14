@@ -58,7 +58,14 @@ const userSchema = new mongoose.Schema({
 userSchema.virtual('places', { //anyname ==> the virual property name (like owner in the otherhand)
     ref: 'Place', //the other model name
     localField: '_id',
-    foreignField: 'owner' //the two fields that are the same (equal)
+    foreignField: 'ownerID' //the two fields that are the same (equal)
+})
+
+//virtual ==> used to link another model (that are not a property in this model)
+userSchema.virtual('places', { //anyname ==> the virual property name (like owner in the otherhand)
+    ref: 'Place', //the other model name
+    localField: 'name',
+    foreignField: 'ownerName' //the two fields that are the same (equal)
 })
 
 userSchema.methods.toJSON = function () {
@@ -103,7 +110,7 @@ userSchema.pre('save', async function (next) {
 //delete user tasks when user is removed
 userSchema.pre('remove', async function (next) {
     const user = this
-    await Task.deleteMany({ owner: user._id })
+    await Task.deleteMany({ ownerID: user._id })
     next()
 })
 

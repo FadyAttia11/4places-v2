@@ -59,6 +59,13 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     }
 })
 
+//get all users (NEW)
+router.get('/api/users/all', async (req, res) => {
+    const users = await User.find({})
+    res.send(users)
+})
+
+//read my profile
 router.get('/users/me', auth, async (req, res) => {
     res.send(req.user)
 })

@@ -5,10 +5,11 @@ const router = new express.Router()
 
 
 //create new place
-router.post('/places', auth, async (req, res) => {
+router.post('/api/places', auth, async (req, res) => {
     const place = new Place({
         ...req.body,
-        owner: req.user._id
+        ownerID: req.user._id,
+        ownerName: req.user.name,
     })
     try {
         await place.save()
@@ -27,14 +28,14 @@ router.get('/api/places/all', async (req, res) => {
 //get all places for a specific user by his id (NEW)
 router.get('/api/places/all/:id', async (req, res) => {
     const _id = req.params.id //user id (NOT place id)
-    const places = await Place.find({ owner: _id })
+    const places = await Place.find({ ownerID: _id })
     res.send(places)
 })
 
 //GET /places?completed=true
 //GET /places?limit=10&skip=20
 //GET /places?sortBy=createdAt:desc
-router.get('/places',auth, async (req, res) => {
+router.get('/api/places',auth, async (req, res) => {
     const match = {}
     const sort = {}
 
@@ -47,17 +48,18 @@ router.get('/places',auth, async (req, res) => {
     }
 
     try {
-        // const places = await Place.find({ owner: req.user._id }) //first approach
-        await req.user.populate({
-            path: 'places',
-            match, //used for filtering (like showing only the false or true places)
-            options: { //used for paginating (limiting data for single page)
-                limit: parseInt(req.query.limit), //for limit the data for single page
-                skip: parseInt(req.query.skip), //for showing the 2nd or 3rd pages
-                sort
-            }
-        }).execPopulate() //second approach
-        res.send(req.user.places)
+        const places = await Place.find({ ownerID: req.user._id }) //first approach
+        // await req.user.populate({
+        //     path: 'places',
+        //     match, //used for filtering (like showing only the false or true places)
+        //     options: { //used for paginating (limiting data for single page)
+        //         limit: parseInt(req.query.limit), //for limit the data for single page
+        //         skip: parseInt(req.query.skip), //for showing the 2nd or 3rd pages
+        //         sort
+        //     }
+        // }).execPopulate() //second approach
+        // res.send(req.user.places)
+        res.send(places)
     }catch(e){
         res.status(500).send()
     }
@@ -67,7 +69,7 @@ router.get('/places',auth, async (req, res) => {
 router.get('/places/:id',auth, async (req, res) => {
     const _id = req.params.id
     try {
-        const place = await Place.findOne({ _id, owner: req.user._id })
+        const place = await Place.findOne({ _id, ownerID: req.user._id })
         if(!place) return res.status(404).send()
         res.send(place)
     }catch(e){
@@ -85,7 +87,7 @@ router.patch('/places/:id', auth, async (req, res) => {
     const _id = req.params.id
 
     try {
-        const place = await Place.findOne({ _id, owner: req.user._id })
+        const place = await Place.findOne({ _id, ownerID: req.user._id })
         if(!place) return res.status(404).send()
 
         updates.forEach((update) => place[update] = req.body[update])
@@ -102,7 +104,7 @@ router.delete('/places/:id', auth, async (req, res) => {
     const _id = req.params.id
 
     try {
-        const place = await Place.findOneAndDelete({ _id, owner: req.user._id })
+        const place = await Place.findOneAndDelete({ _id, ownerID: req.user._id })
         if(!place) return res.status(404).send()
 
         res.send(place)

@@ -15,7 +15,7 @@ const Places = () => {
     const handleShowAllPlaces = async () => {
         const response = await fetchAllPlaces()
         await setPlaces(response)
-        console.log(places) //debugging
+        console.log(response) //debugging
     }
 
     // handleShowAllPlaces()
@@ -25,19 +25,21 @@ const Places = () => {
             <h1>Places Page</h1>
             <button onClick={handleShowAllPlaces}>Show All Places</button>
             <h3>
-            {places !== [] && places.map((data, key) => {
-                return (
-                <div key={key}>
-                    <p className={{ padding: "50px"}}>
-                        {"Name: " + data.name +
-                            " || " +
-                            "Description: " + data.description +
-                            " || " +
-                            "Category: " + data.category}
-                    </p>
-                </div>
-                );
-            })}
+                {places !== [] && places.map((data, key) => {
+                    return (
+                    <div key={key}>
+                        <p className={{ padding: "50px"}}>
+                            {"Name: " + data.name +
+                                " || " +
+                                "Description: " + data.description +
+                                " || " +
+                                "Category: " + data.category +
+                                " || " +
+                                "Place Creator: " + data.ownerName}
+                        </p>
+                    </div>
+                    );
+                })}
             </h3>
         </div>
     )
