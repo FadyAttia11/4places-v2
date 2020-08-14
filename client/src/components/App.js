@@ -5,6 +5,7 @@ import Cookies from 'js-cookie'
 import AuthApi from '../context/AuthApi'
 import Routes from './Routes/Routes'
 import Toolbar from './Toolbar/Toolbar'
+import Footer from './Footer/Footer'
 
 const App = () => {
 
@@ -27,6 +28,7 @@ const App = () => {
         <Router>
           <Toolbar />
           <Routes />
+          <Footer />
         </Router>
       </AuthApi.Provider>
     </div>
