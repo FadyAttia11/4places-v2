@@ -6,6 +6,8 @@ import axios from 'axios'
 const Login = (props) => {
 
   const Auth = useContext(AuthApi)
+  //when Auth.setAuth is false ==> login page appears
+  //when Auth.setAuth is true ==> dashboard page appears
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
