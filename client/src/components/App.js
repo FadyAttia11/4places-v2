@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'
 
 import AuthApi from '../context/AuthApi'
 import Routes from './Routes/Routes'
+import Toolbar from './Toolbar/Toolbar'
 
 const App = () => {
 
@@ -24,6 +25,7 @@ const App = () => {
     <div>
       <AuthApi.Provider value={{ auth, setAuth }}>
         <Router>
+          <Toolbar />
           <Routes />
         </Router>
       </AuthApi.Provider>
