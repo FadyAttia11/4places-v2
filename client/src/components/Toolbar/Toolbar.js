@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import AuthApi from '../../context/AuthApi'
@@ -7,6 +7,7 @@ import AuthApi from '../../context/AuthApi'
 const Toolbar = () => {
     
     const Auth = useContext(AuthApi)
+    let history = useHistory()
 
     const headers = { Authorization: `Bearer ${Cookies.get('x_auth')}`}
 
@@ -25,7 +26,7 @@ const Toolbar = () => {
     }
 
     const logoutUser = () => {
-        const request = axios.get('api/users/logout', { headers })
+        const request = axios.get('http://localhost:3000/api/users/logout', { headers })
                         .then(response => response.data)
         return request
     }
@@ -37,18 +38,24 @@ const Toolbar = () => {
             <div>
                 <ul>
                     <li><Link to="/">Home</Link></li>
-                    <li><Link to="/Dashboard">Dashboard</Link></li>
-                    <li><Link to="/Places">Places</Link></li>
-                    <li><Link to="/Users">Users</Link></li>
+                    <li><Link to="/addnewplace">AddNewPlace</Link></li>
+                    <li><Link to="/discover">Discover</Link></li>
+                    <li><Link to="/about">About</Link></li>
                 </ul>
             </div>
 
             <div>
                 {!Auth.auth && 
                     <ul>
-                        <li><Link to="/Signup">Sign Up</Link></li>
+                        <li><Link to="/signup">Sign Up</Link></li>
                         <li><Link to="/login">Login</Link></li>
                     </ul>
+                }
+            </div>
+
+            <div>
+                {Auth.auth &&
+                    <button onClick={() => history.push('/profile')}>My Profile</button>
                 }
             </div>
 

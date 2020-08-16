@@ -77,6 +77,7 @@ const Login = (props) => {
               name="email"
               id="email" 
               type="email" 
+              placeholder="ex: account@example.com" 
               value={email}
               onChange={e => handleEmailChange(e)}
           /><br/>
@@ -86,6 +87,7 @@ const Login = (props) => {
               name="password"
               id="password" 
               type="password" 
+              placeholder="ex: d0nTuSeS2meValue" 
               value={password}
               onChange={e => handlePasswordChange(e)}
           /><br/>

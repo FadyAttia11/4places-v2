@@ -16,6 +16,10 @@ const placeSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    keywords:{
+        type: Array,
+        trim:true
+    },
     ownerID: {
         type: mongoose.Schema.Types.ObjectId, //define type as an ID
         required: true,

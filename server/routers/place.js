@@ -9,7 +9,7 @@ router.post('/api/places', auth, async (req, res) => {
     const place = new Place({
         ...req.body,
         ownerID: req.user._id,
-        ownerName: req.user.name,
+        ownerName: req.user.name
     })
     try {
         await place.save()
@@ -22,6 +22,13 @@ router.post('/api/places', auth, async (req, res) => {
 //get all places (NEW)
 router.get('/api/places/all', async (req, res) => {
     const places = await Place.find({})
+    res.send(places)
+})
+
+router.post('/api/places/find', async (req, res) => {
+    const places = await Place.find({
+        keywords: req.body.searchValue
+    })
     res.send(places)
 })
 
