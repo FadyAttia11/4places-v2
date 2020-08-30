@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import './Discover.scss'
 
 const Discover = () => {
 
@@ -29,7 +30,6 @@ const Discover = () => {
                     return 0;
             } 
         }
-
         const sortedData = data.sort(compare_name)
         
         console.log(sortedData) //debugging
@@ -57,52 +57,59 @@ const Discover = () => {
     }
 
     return (
-        <div>
-            <h1>Discover Page</h1>
-            <button onClick={handleShowAllPlaces}>Show All Places</button>
-        
-            <br />
-            {boolean && <input placeholder="Filter Places (Not done yet)" />}
-                
-            <h3>
-                {places !== [] && places.map((data, key) => {
-                    return (
-                    <div key={key}>
-                        <p className={{ padding: "50px"}}>
-                            {"Name: " + data.name +
-                                " || " +
-                                "Description: " + data.description +
-                                " || " +
-                                "Category: " + data.category +
-                                " || " +
-                                "Place Creator: " + data.ownerName}
-                        </p>
-                    </div>
-                    );
-                })}
-            </h3>
+        <section id="discover">
+            <div className="discover container">
+                <h1><span>D</span>iscover</h1>
+                <div className="content">
 
-            <button onClick={handleShowAllUsers}>Show All Users</button>
-            <h3>
-                {users !== [] && users.map((data, key) => {
-                    return (
-                    <div key={key}>
-                        <Link 
-                            to={{
-                                pathname: `/user/${data._id}`,
-                                aboutProps: {
-                                    data
-                                }
-                            }} 
-                            className={{ padding: "50px"}}
-                        >
-                            {data.name}
-                        </Link>
+                    <div className="all-places">
+                        <button className="cta" onClick={handleShowAllPlaces}>Show All Places</button>
+                        {boolean && <input placeholder="Filter Places (Not done yet)" />}
+                        <h3>
+                            {places !== [] && places.map((data, key) => {
+                                return (
+                                <div className="place" key={key}>
+                                    <p>
+                                        {"Name: " + data.name +
+                                            " || " +
+                                            "Description: " + data.description +
+                                            " || " +
+                                            "Category: " + data.category +
+                                            " || " +
+                                            "Place Creator: " + data.ownerName}
+                                    </p>
+                                </div>
+                                );
+                            })}
+                        </h3>
                     </div>
-                    );
-                })}
-            </h3>
-        </div>
+
+
+                    <div className="all-users">
+                        <button className="cta" onClick={handleShowAllUsers}>Show All Users</button>
+                        <h3>
+                            {users !== [] && users.map((data, key) => {
+                                return (
+                                <div key={key}>
+                                    <Link 
+                                        to={{
+                                            pathname: `/user/${data._id}`,
+                                            aboutProps: {
+                                                data
+                                            }
+                                        }} 
+                                        className={{ padding: "50px"}}
+                                    >
+                                        {data.name}
+                                    </Link>
+                                </div>
+                                );
+                            })}
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </section>
     )
 }
 

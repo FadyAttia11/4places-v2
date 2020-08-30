@@ -1,0 +1,82 @@
+#header {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: auto;
+
+    .header {
+        
+    }
+}
+
+
+/* Media Query for desktop */
+@media only screen and (min-width: 200px) {
+    #header{
+        
+        .header {
+
+            .nav-bar {
+                display: flex;
+                flex-direction: row;
+                padding: 0 1rem;
+                margin-top: 15px;
+
+                .brand .logo {
+                    color: white;
+                    text-decoration: none;
+                    font-size: 2.5rem;
+
+                    span {
+                        color: crimson;
+                    }
+                }
+
+                .spacer {
+                    flex: 0.5;
+                }
+
+                .nav-list{
+                    display: flex;
+                    flex-direction: row;
+
+                    ul {
+                        list-style: none;
+                        display: flex;
+                        flex-direction: row;
+
+                        a {
+                            text-decoration: none;
+                            color: white;
+                            font-size: 2.5rem;
+                            padding: 30px;
+                        }
+
+                        a:hover {
+                            color: crimson;
+                        }
+                    }
+
+                    .cta {
+                        background-color: transparent;
+                        color: white;
+                        border: none;
+                        font-size: 2.5rem;
+                        padding: 0 30px;
+                        cursor: pointer;
+                    }
+
+                    .profile-btn {
+                        color: rgb(209, 209, 209);
+                    }
+
+                    .cta:hover {
+                        color: crimson;
+                    } 
+                } 
+            }
+        }
+    }
+}

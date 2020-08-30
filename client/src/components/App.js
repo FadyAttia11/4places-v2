@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import Cookies from 'js-cookie'
+import './App.scss'
 
 import AuthApi from '../context/AuthApi'
 import Routes from './Routes/Routes'
@@ -23,7 +24,7 @@ const App = () => {
   }, [])
 
   return (
-    <div>
+    <div className="all">
       <AuthApi.Provider value={{ auth, setAuth }}>
         <Router>
           <Toolbar />

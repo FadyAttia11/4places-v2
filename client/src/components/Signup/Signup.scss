@@ -1,0 +1,35 @@
+#signup {
+
+    .signup {
+
+        form {
+            label {
+                color: white;
+                font-size: 1.8rem;
+            }
+
+            input {
+                padding: 8px;
+                width: 300px;
+                font-size: 1.6rem;
+                margin-bottom: 20px;
+            }
+
+            .cta {
+                width: 300px;
+                padding: 10px;
+                cursor: pointer;
+                background-color: transparent;
+                color: crimson;
+                font-size: 2rem;
+                border: 2px solid crimson;
+                margin: 10px 0;
+            }
+
+            .cta:hover {
+                background-color: crimson;
+                color: white;
+            }
+        }
+    }
+}

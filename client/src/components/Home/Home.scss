@@ -1,0 +1,52 @@
+#home {
+
+    .home {
+
+        .search-form {
+            margin: 50px 30px;
+
+            input {
+                padding: 10px;
+                width: 400px;
+                font-size: 2rem;
+            }
+
+            .cta {
+                padding: 10px;
+                cursor: pointer;
+                background-color: transparent;
+                color: crimson;
+                font-size: 2rem;
+                border: 2px solid crimson;
+                margin-left: 20px;
+            }
+
+            .cta:hover {
+                background-color: crimson;
+                color: white;
+            }
+        }
+
+        h3 {    
+            margin: 20px 0;
+        }
+
+        .add-place-btn {
+            width: 500px;
+            padding: 10px;
+            cursor: pointer;
+            background-color: transparent;
+            color: crimson;
+            border: 2px solid crimson;
+            font-size: 2rem;
+            
+        }
+
+        .add-place-btn:hover {
+            background-color: crimson;
+            color: white;
+        }
+    }
+}
+
+

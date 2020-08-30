@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import AuthApi from '../../context/AuthApi'
 import Cookies from 'js-cookie'
 import axios from 'axios'
+import './Login.scss'
 
 const Login = (props) => {
 
@@ -69,44 +70,47 @@ const Login = (props) => {
     // }
 
     return (
-      <div>
-        <h1>Login Page</h1>
-        <form>
-          <label htmlFor="email">E-mail: </label><br/>
-          <input 
-              name="email"
-              id="email" 
-              type="email" 
-              placeholder="ex: account@example.com" 
-              value={email}
-              onChange={e => handleEmailChange(e)}
-          /><br/>
-          
-          <label htmlFor="password">Password: </label><br/>
-          <input 
-              name="password"
-              id="password" 
-              type="password" 
-              placeholder="ex: d0nTuSeS2meValue" 
-              value={password}
-              onChange={e => handlePasswordChange(e)}
-          /><br/>
+        <section id="login">
+            <div className="login container">
+                <h1><span>L</span>ogin</h1>
+                <form>
+                    <label htmlFor="email">E-mail: </label><br/>
+                    <input 
+                        name="email"
+                        id="email" 
+                        type="email" 
+                        placeholder="ex: account@example.com" 
+                        value={email}
+                        onChange={e => handleEmailChange(e)}
+                    /><br/>
+                    
+                    <label htmlFor="password">Password: </label><br/>
+                    <input 
+                        name="password"
+                        id="password" 
+                        type="password" 
+                        placeholder="ex: d0nTuSeS2meValue" 
+                        value={password}
+                        onChange={e => handlePasswordChange(e)}
+                    /><br/>
 
-          {errors.length > 0 && (
-              <div>
-                  {displayErrors(errors)}
-              </div>
-          )}
+                    {errors.length > 0 && (
+                        <div>
+                            {displayErrors(errors)}
+                        </div>
+                    )}
 
-          <button
-              name="action"
-              type="submit"
-              onClick={e => submitForm(e)}
-          >
-              Login
-          </button>
-          </form>
-      </div>
+                    <button
+                        className="cta"
+                        name="action"
+                        type="submit"
+                        onClick={e => submitForm(e)}
+                    >
+                        Login
+                    </button>
+                </form>
+            </div>
+        </section>
     )
 }
 

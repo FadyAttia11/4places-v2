@@ -1,0 +1,32 @@
+#discover {
+
+    .discover {
+
+        .content {
+            display: flex;
+            flex-direction: row;
+            .cta {
+                width: 320px;
+                padding: 10px;
+                cursor: pointer;
+                background-color: transparent;
+                color: white;
+                font-size: 2rem;
+                border: 2px solid crimson;
+                margin: 10px 20px;
+            }
+
+            .cta:hover {
+                background-color: crimson;
+                color: white;
+            }
+
+            .all-places {
+                .place p {
+                    
+                }
+            }
+        }
+        
+    }
+}

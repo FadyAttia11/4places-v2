@@ -1,11 +1,14 @@
 import React, { useContext } from 'react'
+import './Footer.scss'
 
 const Footer = () => {
 
     return (
-      <div>
-        <p>Footer here...</p>
-      </div>
+      <section id="footer">
+        <div className="footer container">
+          <p>Footer here...</p>
+        </div>
+      </section>
     )
 }
 
